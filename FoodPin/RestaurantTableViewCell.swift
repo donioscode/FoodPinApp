@@ -9,12 +9,13 @@ import UIKit
 
 class RestaurantTableViewCell: UITableViewCell {
     
+    @IBOutlet var favoriteImageView: UIImageView!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var locationLabel: UILabel!
     @IBOutlet var typeLabel: UILabel!
     @IBOutlet var thumbnailImageView: UIImageView!{
         didSet{
-//            thumbnailImageView.layer.cornerRadiu/*s = thumbnailImageView.bounds.width / 2*/
+            thumbnailImageView.layer.cornerRadius = 20.0
             thumbnailImageView.clipsToBounds = true
         }
     }
