@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		91742F9A2CE37EA400F1DA06 /* Exceptions for "FoodPin" folder in "FoodPin" target */ = {
+		91FD5DCB2CEC82A400C693A1 /* Exceptions for "FoodPin" folder in "FoodPin" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -21,10 +21,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		91742F8A2CE37EA200F1DA06 /* FoodPin */ = {
+		91FD5DC32CEC82A400C693A1 /* FoodPin */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				91742F9A2CE37EA400F1DA06 /* Exceptions for "FoodPin" folder in "FoodPin" target */,
+				91FD5DCB2CEC82A400C693A1 /* Exceptions for "FoodPin" folder in "FoodPin" target */,
 			);
 			path = FoodPin;
 			sourceTree = "<group>";
@@ -45,7 +45,7 @@
 		91742F7F2CE37EA200F1DA06 = {
 			isa = PBXGroup;
 			children = (
-				91742F8A2CE37EA200F1DA06 /* FoodPin */,
+				91FD5DC32CEC82A400C693A1 /* FoodPin */,
 				91742F892CE37EA200F1DA06 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,7 +74,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				91742F8A2CE37EA200F1DA06 /* FoodPin */,
+				91FD5DC32CEC82A400C693A1 /* FoodPin */,
 			);
 			name = FoodPin;
 			packageProductDependencies = (

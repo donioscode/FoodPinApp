@@ -36,11 +36,8 @@ class RestaurantTableViewController: UITableViewController {
     
     lazy var dataSource = configureDataSource()
     
-    enum Section {
-        case all
-    }
-    
-    
+ 
+    //MARK: ViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,22 +51,22 @@ class RestaurantTableViewController: UITableViewController {
         
         dataSource.apply(snapshot, animatingDifferences: false)
         
-        
     }
     
-    // MARK: TableViewDataSource
-    func configureDataSource() -> UITableViewDiffableDataSource<Section, Restaurant> {
-        let cellIdentifier = "datacell"
-        let dataSource = UITableViewDiffableDataSource<Section, Restaurant>(
+    // MARK: UITableView Diffable DataSource Protocol
+    func configureDataSource() -> RestaurantDiffableDataSource {
+        let cellIdentifier = "favoritecell"
+        let dataSource = RestaurantDiffableDataSource(
             tableView: tableView,
             cellProvider: {  tableView, indexPath, restaurant in
                 let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! RestaurantTableViewCell
                 
                 cell.nameLabel?.text = restaurant.name
-                cell.thumbnailImageView?.image = UIImage(named: self.restaurant.image)
-                
+                cell.typeLabel.text = restaurant.type
+                cell.locationLabel.text = restaurant.location
+                cell.thumbnailImageView?.image = UIImage(named: restaurant.image)
                 // Solution exercise #2
-                cell.favoriteImageView.isHidden = self.restaurantIsFavorites[indexPath.row] ? false : true
+                cell.favoriteImageView.isHidden = self.restaurants[indexPath.row].isFavorite ? false : true
                 
                 return cell
             }
@@ -78,7 +75,7 @@ class RestaurantTableViewController: UITableViewController {
         return dataSource
     }
     
-    //MARK: TableViewDelegate
+    //MARK: UITableViewDelegate Protocol
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Create an option menu as an action sheet
@@ -87,6 +84,7 @@ class RestaurantTableViewController: UITableViewController {
             if let cell = tableView.cellForRow(at: indexPath){
                 popoverController.sourceView = cell
                 popoverController.sourceRect = cell.bounds
+                
             }
         }
         
@@ -122,8 +120,68 @@ class RestaurantTableViewController: UITableViewController {
         present(optionMenu, animated: true,completion: nil)
         
         tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let restaurant = self.dataSource.itemIdentifier(for: indexPath) else {
+            return UISwipeActionsConfiguration()
+        }
+        
+        // Delete action
+        
+    
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
+            
+            var snapshot = self.dataSource.snapshot()
+            snapshot.deleteItems([restaurant])
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+            
+            // Call complation handler to dismiss the action button
+            completionHandler(true)
+        
+        }
+        deleteAction.backgroundColor = .systemRed
+        deleteAction.image = UIImage(systemName: "trash")
+        
+        
+        // Share action
+        
+        let shareAction = UIContextualAction(style: .normal, title: "Share") { (action, sourceView, completionHandler) in
+            
+            let defaultText = "Just checking in at " + restaurant.name
+            let activityController : UIActivityViewController
+            if let imageToShare = UIImage(named: restaurant.image) {
+                activityController = UIActivityViewController(activityItems: [defaultText, imageToShare], applicationActivities: nil)
+            } else {
+                activityController = UIActivityViewController(activityItems: [defaultText], applicationActivities: nil)
+            }
+            
+            self.present(activityController, animated: true, completion: nil)
+            if let popoverController = activityController.popoverPresentationController {
+                if let cell = tableView.cellForRow(at: indexPath) {
+                    popoverController.sourceView = cell
+                    popoverController.sourceRect = cell.bounds
+                }
+            }
+            completionHandler(true)
+            
+            
+        }
+        shareAction.backgroundColor = .systemOrange
+        shareAction.image = UIImage(systemName: "square.and.arrow.up")
+        
+        // Configure both action as swipe action
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, shareAction])
+        return swipeConfiguration
+        
         
     }
+//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        <#code#>
+//    }
     
     
     
