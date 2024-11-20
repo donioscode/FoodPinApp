@@ -169,6 +169,7 @@ class RestaurantTableViewController: UITableViewController {
             
             
         }
+        
         shareAction.backgroundColor = .systemOrange
         shareAction.image = UIImage(systemName: "square.and.arrow.up")
         
@@ -179,9 +180,25 @@ class RestaurantTableViewController: UITableViewController {
         
         
     }
-//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        <#code#>
-//    }
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let favoriteAction = UIContextualAction(style: .normal, title: nil) { (action, sourceView, completionHandler) in
+            let cell = tableView.cellForRow(at: indexPath) as! RestaurantTableViewCell
+
+            cell.favoriteImageView.isHidden = self.restaurants[indexPath.row].isFavorite
+            self.restaurants[indexPath.row].isFavorite = self.restaurants[indexPath.row].isFavorite ? false : true
+
+            completionHandler(true)
+        }
+        
+        favoriteAction.backgroundColor = .systemYellow
+        favoriteAction.image = UIImage(systemName: self.restaurants[indexPath.row].isFavorite ? "heart.slash.fill" : "heart.fill")
+        
+        let swipeActionsConfiguration = UISwipeActionsConfiguration(actions: [favoriteAction])
+        
+        return swipeActionsConfiguration
+    }
+    
     
     
     
