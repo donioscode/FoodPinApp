@@ -45,12 +45,32 @@ class RestaurantTableViewController: UITableViewController {
         tableView.separatorStyle = .none
         tableView.cellLayoutMarginsFollowReadableWidth = true
         
+        if let appearance = navigationController?.navigationBar.standardAppearance {
+            appearance.configureWithTransparentBackground()
+            if let customFont = UIFont(name: "Nunito-Bold", size: 45.0){
+                appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "NavigationBarTitle")!]
+                appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "NavigationBarTitle")!,.font:customFont]
+            }
+            
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.compactAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        }
+        navigationItem.backButtonTitle = ""
+        
         var snapshot = NSDiffableDataSourceSnapshot<Section, Restaurant>()
         snapshot.appendSections([.all])
         snapshot.appendItems(restaurants, toSection: .all)
         
         dataSource.apply(snapshot, animatingDifferences: false)
         
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    // MARK: ViewWillAppear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.hidesBarsOnSwipe = true
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
