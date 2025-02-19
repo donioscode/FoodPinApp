@@ -19,8 +19,8 @@ class RestaurantDetailViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        self.tableView.separatorStyle = .none
-        self.tableView.contentInsetAdjustmentBehavior = .never
+        tableView.separatorStyle = .none
+        tableView.contentInsetAdjustmentBehavior = .never
         
         
         navigationController?.navigationBar.prefersLargeTitles = false
@@ -53,7 +53,7 @@ class RestaurantDetailViewController: UIViewController {
 extension RestaurantDetailViewController: UITableViewDataSource,UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,6 +71,12 @@ extension RestaurantDetailViewController: UITableViewDataSource,UITableViewDeleg
                 cell.column2TextLabel.text = restaurant.phone
                 
                 return cell
+            case 2:
+                let cell = tableView.dequeueReusableCell(withIdentifier:String(describing: RestaurantDetailMapCell.self) , for: indexPath) as! RestaurantDetailMapCell
+                cell.configure(location: restaurant.location)
+                cell.selectionStyle = .none
+                return cell
+                
             default:
                 fatalError("Failed to instantiate the table view cell for detail view controller")
         }
